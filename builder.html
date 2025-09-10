@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdn.quilljs.com; style-src 'self' https://cdn.quilljs.com https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
+    <title>Pro CV Builder | EleganceCV Pro - ATS Compatible</title>
+    
+    <link rel="stylesheet" href="builder.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button id="saveBtn"><i class="fas fa-save"></i> Save</button>
+        <button id="exportBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+        <button id="exportATS"><i class="fas fa-code"></i> Export JSON</button>
+        <button id="exportPlainText"><i class="fas fa-file-code"></i> Export .txt</button>
+        <button id="resetBtn"><i class="fas fa-trash-alt"></i> Reset</button>
+    </div>
+
+    <!-- Main Builder Container -->
+    <div class="builder-container">
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="panel-section">
+                <h3><i class="fas fa-puzzle-piece"></i> Resume Sections</h3>
+                <ul class="sections-list" id="draggableSections">
+                    <li class="section-item" data-section="header">
+                        <i class="fas fa-user"></i> Header
+                    </li>
+                    <li class="section-item" data-section="summary">
+                        <i class="fas fa-file-alt"></i> Summary
+                    </li>
+                    <li class="section-item" data-section="experience">
+                        <i class="fas fa-briefcase"></i> Experience
+                    </li>
+                    <li class="section-item" data-section="education">
+                        <i class="fas fa-graduation-cap"></i> Education
+                    </li>
+                    <li class="section-item" data-section="skills">
+                        <i class="fas fa-code"></i> Skills
+                    </li>
+                    <li class="section-item" data-section="languages">
+                        <i class="fas fa-language"></i> Languages
+                    </li>
+                    <li class="section-item" data-section="projects">
+                        <i class="fas fa-project-diagram"></i> Projects
+                    </li>
+                    <li class="section-item" data-section="certifications">
+                        <i class="fas fa-certificate"></i> Certifications
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="panel-section">
+                <h3><i class="fas fa-camera"></i> Profile Photo</h3>
+                <div class="photo-upload">
+                    <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                    <button id="uploadPhotoBtn" class="upload-btn">
+                        <i class="fas fa-upload"></i> Choose Photo
+                    </button>
+                    <div id="photoPreview" class="photo-preview"></div>
+                    <button id="removePhotoBtn" class="remove-btn" style="display: none;">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <h3><i class="fas fa-cog"></i> Settings</h3>
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <label for="fontFamily">Font Family</label>
+                        <select id="fontFamily" class="setting-select">
+                            <option value="'Poppins', sans-serif">Poppins</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Arial">Arial</option>
+                            <option value="'Times New Roman'">Times New Roman</option>
+                            <option value="Courier">Courier</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="fontSize">Font Size</label>
+                        <select id="fontSize" class="setting-select">
+                            <option value="12px">Small</option>
+                            <option value="14px" selected>Medium</option>
+                            <option value="16px">Large</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Structured Data Section for ATS -->
+            <div class="panel-section structured-data-panel">
+                <h3><i class="fas fa-database"></i> Structured Data (ATS)</h3>
+                <div class="structured-field">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" data-field="personalInfo.fullName" placeholder="First Name Last Name">
+                </div>
+                <div class="structured-field">
+                    <label for="jobTitle">Job Title *</label>
+                    <input type="text" id="jobTitle" data-field="personalInfo.jobTitle" placeholder="Web Developer">
+                </div>
+                <div class="structured-field">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" data-field="personalInfo.email" placeholder="example@email.com">
+                </div>
+                <div class="structured-field">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" data-field="personalInfo.phone" placeholder="+1 123-456-7890">
+                </div>
+                <div class="structured-field">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" data-field="personalInfo.location" placeholder="City, Country">
+                </div>
+            </div>
+
+            <!-- ATS Warning -->
+            <div class="ats-warning">
+                <h4><i class="fas fa-exclamation-triangle"></i> ATS Compatibility</h4>
+                <p>For better readability by Applicant Tracking Systems (ATS):</p>
+                <ul>
+                    <li>Use relevant keywords</li>
+                    <li>Avoid complex columns and tables</li>
+                    <li>Prefer simple formats</li>
+                    <li>Export text version for ATS</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Editor Area -->
+        <div class="editor-area">
+            <div class="resume-paper" id="resumePaper">
+                <!-- Default content -->
+                <div class="resume-section" data-type="header">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i>
+                        <h3>HEADER</h3>
+                    </div>
+                    <div class="section-content">
+                        <div id="header-editor" class="rich-editor">
+                            <h1>YOUR NAME</h1>
+                            <h2>Professional Title</h2>
+                            <p><i class="fas fa-phone"></i> Phone</p>
+                            <p><i class="fas fa-envelope"></i> Email</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Address</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toastNotification">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Operation successful</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
+    <script src="builder.js"></script>
+</body>
+</html>
